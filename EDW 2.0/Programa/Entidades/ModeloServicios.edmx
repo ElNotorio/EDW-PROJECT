@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EDWModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Can">
+          <Key>
+            <PropertyRef Name="IDCan" />
+          </Key>
+          <Property Name="IDCan" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DNIDueño" Type="bigint" Nullable="false" />
+          <Property Name="NombreC" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RazaC" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CaracterC" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TamañoC" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="VacunasC" Type="int" Nullable="false" />
+          <Property Name="NacimientoC" Type="date" Nullable="false" />
+          <Property Name="DescripcionC" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Dueño">
+          <Key>
+            <PropertyRef Name="DNIDueño" />
+          </Key>
+          <Property Name="DNIDueño" Type="bigint" Nullable="false" />
+          <Property Name="NombreD" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Apellido_MaternoD" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Apellido_PaternoD" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TelefonoD" Type="bigint" Nullable="false" />
+          <Property Name="DistritoD" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DireccionD" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RefDirD" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CorreoD" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NacimientoD" Type="date" Nullable="false" />
+          <Property Name="GeneroD" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Paseador">
+          <Key>
+            <PropertyRef Name="DNIPaseador" />
+          </Key>
+          <Property Name="DNIPaseador" Type="bigint" Nullable="false" />
+          <Property Name="NombreP" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ApellidosP" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DistritoP" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CorreoP" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NacimientoP" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="GeneroP" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Solicitud">
+          <Key>
+            <PropertyRef Name="IDSolicitud" />
+          </Key>
+          <Property Name="IDSolicitud" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DNIPaseador" Type="bigint" Nullable="false" />
+          <Property Name="DNIDueño" Type="bigint" Nullable="false" />
+          <Property Name="Monto" Type="money" Nullable="false" />
+          <Property Name="Aceptacion" Type="int" Nullable="false" />
+          <Property Name="Fecha" Type="date" Nullable="false" />
+          <Property Name="Hora" Type="time" Precision="7" Nullable="false" />
+          <Property Name="CodigoPago" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Can_Dueño">
+          <End Role="Dueño" Type="Self.Dueño" Multiplicity="1" />
+          <End Role="Can" Type="Self.Can" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dueño">
+              <PropertyRef Name="DNIDueño" />
+            </Principal>
+            <Dependent Role="Can">
+              <PropertyRef Name="DNIDueño" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Solicitud_Dueño">
+          <End Role="Dueño" Type="Self.Dueño" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dueño">
+              <PropertyRef Name="DNIDueño" />
+            </Principal>
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="DNIDueño" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Solicitud_Paseador">
+          <End Role="Paseador" Type="Self.Paseador" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paseador">
+              <PropertyRef Name="DNIPaseador" />
+            </Principal>
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="DNIPaseador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EDWModelStoreContainer">
+          <EntitySet Name="Can" EntityType="Self.Can" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dueño" EntityType="Self.Dueño" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Paseador" EntityType="Self.Paseador" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Solicitud" EntityType="Self.Solicitud" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Can_Dueño" Association="Self.FK_Can_Dueño">
+            <End Role="Dueño" EntitySet="Dueño" />
+            <End Role="Can" EntitySet="Can" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Solicitud_Dueño" Association="Self.FK_Solicitud_Dueño">
+            <End Role="Dueño" EntitySet="Dueño" />
+            <End Role="Solicitud" EntitySet="Solicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Solicitud_Paseador" Association="Self.FK_Solicitud_Paseador">
+            <End Role="Paseador" EntitySet="Paseador" />
+            <End Role="Solicitud" EntitySet="Solicitud" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EDWModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Can">
+          <Key>
+            <PropertyRef Name="IDCan" />
+          </Key>
+          <Property Name="IDCan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DNIDueño" Type="Int64" Nullable="false" />
+          <Property Name="NombreC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RazaC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CaracterC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TamañoC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VacunasC" Type="Int32" Nullable="false" />
+          <Property Name="NacimientoC" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DescripcionC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Dueño" Relationship="Self.FK_Can_Dueño" FromRole="Can" ToRole="Dueño" />
+        </EntityType>
+        <EntityType Name="Dueño">
+          <Key>
+            <PropertyRef Name="DNIDueño" />
+          </Key>
+          <Property Name="DNIDueño" Type="Int64" Nullable="false" />
+          <Property Name="NombreD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Apellido_MaternoD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Apellido_PaternoD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TelefonoD" Type="Int64" Nullable="false" />
+          <Property Name="DistritoD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DireccionD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RefDirD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CorreoD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NacimientoD" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="GeneroD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Can" Relationship="Self.FK_Can_Dueño" FromRole="Dueño" ToRole="Can" />
+          <NavigationProperty Name="Solicitud" Relationship="Self.FK_Solicitud_Dueño" FromRole="Dueño" ToRole="Solicitud" />
+        </EntityType>
+        <EntityType Name="Paseador">
+          <Key>
+            <PropertyRef Name="DNIPaseador" />
+          </Key>
+          <Property Name="DNIPaseador" Type="Int64" Nullable="false" />
+          <Property Name="NombreP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ApellidosP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DistritoP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CorreoP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NacimientoP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GeneroP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Solicitud" Relationship="Self.FK_Solicitud_Paseador" FromRole="Paseador" ToRole="Solicitud" />
+        </EntityType>
+        <EntityType Name="Solicitud">
+          <Key>
+            <PropertyRef Name="IDSolicitud" />
+          </Key>
+          <Property Name="IDSolicitud" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DNIPaseador" Type="Int64" Nullable="false" />
+          <Property Name="DNIDueño" Type="Int64" Nullable="false" />
+          <Property Name="Monto" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Aceptacion" Type="Int32" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Hora" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="CodigoPago" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Dueño" Relationship="Self.FK_Solicitud_Dueño" FromRole="Solicitud" ToRole="Dueño" />
+          <NavigationProperty Name="Paseador" Relationship="Self.FK_Solicitud_Paseador" FromRole="Solicitud" ToRole="Paseador" />
+        </EntityType>
+        <Association Name="FK_Can_Dueño">
+          <End Role="Dueño" Type="Self.Dueño" Multiplicity="1" />
+          <End Role="Can" Type="Self.Can" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dueño">
+              <PropertyRef Name="DNIDueño" />
+            </Principal>
+            <Dependent Role="Can">
+              <PropertyRef Name="DNIDueño" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Solicitud_Dueño">
+          <End Role="Dueño" Type="Self.Dueño" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dueño">
+              <PropertyRef Name="DNIDueño" />
+            </Principal>
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="DNIDueño" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Solicitud_Paseador">
+          <End Role="Paseador" Type="Self.Paseador" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paseador">
+              <PropertyRef Name="DNIPaseador" />
+            </Principal>
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="DNIPaseador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EDWEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Can" EntityType="Self.Can" />
+          <EntitySet Name="Dueño" EntityType="Self.Dueño" />
+          <EntitySet Name="Paseador" EntityType="Self.Paseador" />
+          <EntitySet Name="Solicitud" EntityType="Self.Solicitud" />
+          <AssociationSet Name="FK_Can_Dueño" Association="Self.FK_Can_Dueño">
+            <End Role="Dueño" EntitySet="Dueño" />
+            <End Role="Can" EntitySet="Can" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Solicitud_Dueño" Association="Self.FK_Solicitud_Dueño">
+            <End Role="Dueño" EntitySet="Dueño" />
+            <End Role="Solicitud" EntitySet="Solicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Solicitud_Paseador" Association="Self.FK_Solicitud_Paseador">
+            <End Role="Paseador" EntitySet="Paseador" />
+            <End Role="Solicitud" EntitySet="Solicitud" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EDWModelStoreContainer" CdmEntityContainer="EDWEntities">
+          <EntitySetMapping Name="Can">
+            <EntityTypeMapping TypeName="EDWModel.Can">
+              <MappingFragment StoreEntitySet="Can">
+                <ScalarProperty Name="IDCan" ColumnName="IDCan" />
+                <ScalarProperty Name="DNIDueño" ColumnName="DNIDueño" />
+                <ScalarProperty Name="NombreC" ColumnName="NombreC" />
+                <ScalarProperty Name="RazaC" ColumnName="RazaC" />
+                <ScalarProperty Name="CaracterC" ColumnName="CaracterC" />
+                <ScalarProperty Name="TamañoC" ColumnName="TamañoC" />
+                <ScalarProperty Name="VacunasC" ColumnName="VacunasC" />
+                <ScalarProperty Name="NacimientoC" ColumnName="NacimientoC" />
+                <ScalarProperty Name="DescripcionC" ColumnName="DescripcionC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dueño">
+            <EntityTypeMapping TypeName="EDWModel.Dueño">
+              <MappingFragment StoreEntitySet="Dueño">
+                <ScalarProperty Name="DNIDueño" ColumnName="DNIDueño" />
+                <ScalarProperty Name="NombreD" ColumnName="NombreD" />
+                <ScalarProperty Name="Apellido_MaternoD" ColumnName="Apellido_MaternoD" />
+                <ScalarProperty Name="Apellido_PaternoD" ColumnName="Apellido_PaternoD" />
+                <ScalarProperty Name="TelefonoD" ColumnName="TelefonoD" />
+                <ScalarProperty Name="DistritoD" ColumnName="DistritoD" />
+                <ScalarProperty Name="DireccionD" ColumnName="DireccionD" />
+                <ScalarProperty Name="RefDirD" ColumnName="RefDirD" />
+                <ScalarProperty Name="CorreoD" ColumnName="CorreoD" />
+                <ScalarProperty Name="NacimientoD" ColumnName="NacimientoD" />
+                <ScalarProperty Name="GeneroD" ColumnName="GeneroD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Paseador">
+            <EntityTypeMapping TypeName="EDWModel.Paseador">
+              <MappingFragment StoreEntitySet="Paseador">
+                <ScalarProperty Name="DNIPaseador" ColumnName="DNIPaseador" />
+                <ScalarProperty Name="NombreP" ColumnName="NombreP" />
+                <ScalarProperty Name="ApellidosP" ColumnName="ApellidosP" />
+                <ScalarProperty Name="DistritoP" ColumnName="DistritoP" />
+                <ScalarProperty Name="CorreoP" ColumnName="CorreoP" />
+                <ScalarProperty Name="NacimientoP" ColumnName="NacimientoP" />
+                <ScalarProperty Name="GeneroP" ColumnName="GeneroP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Solicitud">
+            <EntityTypeMapping TypeName="EDWModel.Solicitud">
+              <MappingFragment StoreEntitySet="Solicitud">
+                <ScalarProperty Name="IDSolicitud" ColumnName="IDSolicitud" />
+                <ScalarProperty Name="DNIPaseador" ColumnName="DNIPaseador" />
+                <ScalarProperty Name="DNIDueño" ColumnName="DNIDueño" />
+                <ScalarProperty Name="Monto" ColumnName="Monto" />
+                <ScalarProperty Name="Aceptacion" ColumnName="Aceptacion" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Hora" ColumnName="Hora" />
+                <ScalarProperty Name="CodigoPago" ColumnName="CodigoPago" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
